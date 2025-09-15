@@ -5,15 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -44,19 +43,23 @@ public class Api {
     }
 
     @GetMapping("/random")
-    public Data1 getData(){
-        String url="https://secrets-api.appbrewery.com/random";
+    public List<Data1> getData(){
+        String url="https://secrets-api.appbrewery.com/all?page=1";
         HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth("harnoor3","123456");
         User user = User.builder()
                 .username("harnoor3")
                 .password("123456")
                 .build();
 
-        HttpEntity<User> req = new HttpEntity<>(user, headers);
+        HttpEntity<String> req = new HttpEntity<>(headers);
 
-        ResponseEntity<Data1> res = restTemplate.exchange(url, HttpMethod.GET, req, Data1.class);
-        System.out.println(res.getBody().getEmScore());
-        return res.getBody();
+        ResponseEntity<Data1[]> res = restTemplate.exchange(url, HttpMethod.GET, req, Data1[].class);
+        if(res.getStatusCode()== HttpStatus.OK && res.getBody()!=null ) {
+            System.out.println(res.getBody()[0].getEmScore());
+            return Arrays.asList(res.getBody());
+        }
+        return new ArrayList<Data1>() ;
     }
 }
 
