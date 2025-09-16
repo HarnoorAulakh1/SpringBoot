@@ -1,0 +1,20 @@
+server:
+  port: 4000
+spring:
+  application:
+    name: SpringBoot
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/spring
+      auto-index-creation: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: harnooraulakh16@gmail.com
+    password: obhd ekeq mvsh qbuy
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

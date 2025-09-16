@@ -1,5 +1,4 @@
 package com.example.springboot.config;
-
 import com.example.springboot.models.AppCache;
 import com.example.springboot.repository.AppCacheRepository;
 import jakarta.annotation.PostConstruct;
