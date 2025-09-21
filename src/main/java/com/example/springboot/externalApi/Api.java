@@ -56,7 +56,7 @@ public class Api {
 
         ResponseEntity<Data1[]> res = restTemplate.exchange(url, HttpMethod.GET, req, Data1[].class);
         if(res.getStatusCode()== HttpStatus.OK && res.getBody()!=null ) {
-            System.out.println(res.getBody()[0].getEmScore());
+            //System.out.println(res.getBody()[0].getEmScore());
             return Arrays.asList(res.getBody());
         }
         return new ArrayList<Data1>() ;

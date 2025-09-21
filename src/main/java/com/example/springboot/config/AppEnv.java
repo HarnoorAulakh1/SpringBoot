@@ -3,6 +3,7 @@ import com.example.springboot.models.AppCache;
 import com.example.springboot.repository.AppCacheRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,9 @@ public class AppEnv {
     @Autowired
     private AppCacheRepository ob1;
 
+    @Autowired
+    private ConfigurableEnvironment environment;
+
     @PostConstruct
     public void init(){
         System.out.println("Cache updated");
@@ -24,6 +28,10 @@ public class AppEnv {
         //System.out.println(data);
         for(AppCache x:data)
             cache.put(x.getKey(),x.getValue());
+        if(cache.containsKey("SMTP_PASS"))
+            environment.getSystemProperties().put("spring.mail.password", cache.get("SMTP_PASS"));
+        else
+            System.out.println("SMTP_PASS not found");
     }
 
     public String get(String key){
@@ -32,8 +40,8 @@ public class AppEnv {
         return "Not_Found";
     }
 
-    @Scheduled(cron="0 * * * * ?")
-    public void cronRun(){
-        init();
-    }
+//    @Scheduled(cron="0 * * * * ?")
+//    public void cronRun(){
+//        init();
+//    }
 }
